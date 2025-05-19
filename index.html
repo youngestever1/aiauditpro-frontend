@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ai Audit Expert - Upload</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background: #f7f9fc;
+      color: #333;
+      max-width: 600px;
+      margin: auto;
+    }
+    h1 {
+      color: #222;
+    }
+    .card {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+    input[type="file"] {
+      display: block;
+      margin-bottom: 1rem;
+    }
+    button {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      background-color: #0050ff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    #status {
+      margin-top: 1.5rem;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Upload Your General Ledger</h1>
+    <p>This tool will analyze your Excel (.xlsx) ledger and generate a one-page PDF report with cost-saving insights, powered by AI.</p>
+    <input type="file" id="fileInput" accept=".xlsx" />
+    <button onclick="handleUpload()">Generate Report</button>
+    <div id="status"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
