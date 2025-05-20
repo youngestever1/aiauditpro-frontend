@@ -27,8 +27,19 @@ async function handleUpload() {
     const data = await response.json();
     const downloadUrl = `https://aiauditpro.onrender.com${data.downloadUrl}`;
 
-    status.textContent = "✅ Report ready. Opening download in new tab...";
-    window.open(downloadUrl, "_blank");
+    status.textContent = "✅ Report ready. ";
+
+    // Create a manual download link
+    const link = document.createElement("a");
+    link.href = downloadUrl;
+    link.target = "_blank";
+    link.textContent = "📄 Click here to download your report";
+    link.style.display = "inline-block";
+    link.style.marginTop = "1rem";
+    link.style.color = "#0050ff";
+    link.style.fontWeight = "bold";
+
+    status.appendChild(link);
 
   } catch (err) {
     console.error("❌ Upload error:", err);
