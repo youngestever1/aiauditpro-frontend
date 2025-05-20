@@ -27,17 +27,21 @@ async function handleUpload() {
     const data = await response.json();
     const downloadUrl = `https://aiauditpro.onrender.com${data.downloadUrl}`;
 
-    status.textContent = "✅ Report ready. ";
+    // Clear status area
+    status.innerHTML = "✅ Report ready. ";
 
+    // Create the clickable link
     const link = document.createElement("a");
-    link.href = "#";
+    link.href = downloadUrl; // set real URL
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
     link.textContent = "📄 Click here to download your report";
     link.style.display = "inline-block";
     link.style.marginTop = "1rem";
     link.style.color = "#0050ff";
     link.style.fontWeight = "bold";
 
-    // Manually open the file in a new tab on left click
+    // Force window.open in handler — some browsers require this
     link.addEventListener("click", (e) => {
       e.preventDefault();
       window.open(downloadUrl, "_blank");
