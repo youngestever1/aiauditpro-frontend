@@ -24,7 +24,12 @@ async function handleUpload() {
       throw new Error("Upload failed: " + err);
     }
 
-    status.textContent = "✅ Report is being generated. You’ll receive it shortly!";
+    const data = await response.json();
+    const downloadUrl = `https://aiauditpro.onrender.com${data.downloadUrl}`;
+
+    status.textContent = "✅ Report ready. Opening download in new tab...";
+    window.open(downloadUrl, "_blank");
+
   } catch (err) {
     console.error("❌ Upload error:", err);
     status.textContent = "❌ Error: " + err.message;
