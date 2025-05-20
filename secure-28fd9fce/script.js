@@ -14,7 +14,7 @@ async function handleUpload() {
     const formData = new FormData();
     formData.append("file", file);
 
-    const response = await fetch("https://aiauditpro-backend.onrender.com/upload", {
+    const response = await fetch("https://aiauditpro.onrender.com/upload", {
       method: "POST",
       body: formData
     });
