@@ -29,15 +29,19 @@ async function handleUpload() {
 
     status.textContent = "✅ Report ready. ";
 
-    // Create a manual download link
     const link = document.createElement("a");
-    link.href = downloadUrl;
-    link.target = "_blank";
+    link.href = "#";
     link.textContent = "📄 Click here to download your report";
     link.style.display = "inline-block";
     link.style.marginTop = "1rem";
     link.style.color = "#0050ff";
     link.style.fontWeight = "bold";
+
+    // Manually open the file in a new tab on left click
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      window.open(downloadUrl, "_blank");
+    });
 
     status.appendChild(link);
 
