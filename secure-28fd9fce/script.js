@@ -30,8 +30,7 @@ async function handleUpload() {
     form.append("file", file);
     form.append("email", email);
 
-    //const response = await fetch("https://aiauditpro.onrender.com/upload", {
-    const response = await fetch("https://aiauditexpert.com/_functions/generateReport", {
+    const response = await fetch("https://aiauditpro.onrender.com/upload", {
       method: "POST",
       body: form
     });
