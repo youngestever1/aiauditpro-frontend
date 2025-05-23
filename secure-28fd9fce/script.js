@@ -1,40 +1,48 @@
+// script.js – Vercel-hosted app logic
+
+function getMemberEmail() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('m') || '';
+}
+
 async function handleUpload() {
-  const status = document.getElementById("status");
-  const fileInput = document.getElementById("fileInput");
-  const emailInput = document.getElementById("emailInput");
-  const file = fileInput.files[0];
-  const email = emailInput.value.trim();
+  const statusElem = document.getElementById("status");
+  const fileInput  = document.getElementById("fileInput");
+  const file       = fileInput?.files?.[0];
+  const email      = getMemberEmail();
 
+  // Sanity checks
   if (!file) {
-    status.textContent = "⚠️ Please select a file before uploading.";
+    statusElem.textContent = "⚠️ Please select a file.";
     return;
   }
 
-  if (!email || !email.includes("@")) {
-    status.textContent = "⚠️ Please enter a valid email address.";
+  if (!email) {
+    statusElem.textContent = "⚠️ No member e-mail found. Please return to the main site.";
+    console.error("Missing ?m= email in URL.");
     return;
   }
 
-  status.textContent = "📤 Uploading file...";
+  statusElem.textContent = "📤 Uploading and analyzing your ledger...";
 
   try {
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("email", email);
+    const form = new FormData();
+    form.append("file", file);
+    form.append("email", email);
 
     const response = await fetch("https://aiauditpro.onrender.com/upload", {
       method: "POST",
-      body: formData
+      body: form
     });
 
     if (!response.ok) {
-      const err = await response.text();
-      throw new Error("Upload failed: " + err);
+      const errText = await response.text();
+      throw new Error(errText);
     }
 
-    status.textContent = "✅ Report sent! Check your email.";
+    statusElem.textContent = "✅ Report sent to your e-mail.";
   } catch (err) {
-    console.error("❌ Upload error:", err);
-    status.textContent = "❌ Error: " + err.message;
+    console.error("❌ Upload failed:", err);
+    statusElem.textContent = "❌ Upload failed: " + err.message;
   }
 }
