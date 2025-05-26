@@ -36,13 +36,27 @@ async function handleUpload() {
     });
 
     if (!response.ok) {
-      const errText = await response.text();
-      throw new Error(errText);
+      let errorMessage = "Upload failed.";
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.error || errorMessage;
+      } catch {
+        errorMessage = await response.text();
+      }
+
+      if (response.status === 403) {
+        statusElem.textContent = "❌ No reports remaining. Please subscribe or wait for your next billing cycle.";
+      } else {
+        statusElem.textContent = `❌ Upload failed: ${errorMessage}`;
+      }
+      throw new Error(errorMessage);
     }
 
     statusElem.textContent = "✅ Report sent to your e-mail.";
   } catch (err) {
     console.error("❌ Upload failed:", err);
-    statusElem.textContent = "❌ Upload failed: " + err.message;
+    if (!statusElem.textContent.includes("No reports remaining")) {
+      statusElem.textContent = `❌ Upload failed: ${err.message}`;
+    }
   }
 }
