@@ -36,12 +36,13 @@ async function handleUpload() {
     });
 
     if (!response.ok) {
+      const responseBody = await response.text();
       let errorMessage = "Upload failed.";
       try {
-        const errorData = await response.json();
+        const errorData = JSON.parse(responseBody);
         errorMessage = errorData.error || errorMessage;
       } catch {
-        errorMessage = await response.text();
+        errorMessage = responseBody;
       }
 
       if (response.status === 403) {
