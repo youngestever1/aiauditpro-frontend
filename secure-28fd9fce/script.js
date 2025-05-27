@@ -10,6 +10,7 @@ async function handleUpload() {
   const fileInput  = document.getElementById("fileInput");
   const file       = fileInput?.files?.[0];
   const email      = getMemberEmail();
+  const button     = document.getElementById("uploadButton");
 
   // Sanity checks
   if (!file) {
@@ -23,6 +24,11 @@ async function handleUpload() {
     return;
   }
 
+  // Disable button and grey it out
+  button.disabled = true;
+  button.style.backgroundColor = "#999";
+
+  // Set uploading status
   statusElem.textContent = "📤 Uploading and analyzing your ledger...";
 
   try {
@@ -58,6 +64,21 @@ async function handleUpload() {
     console.error("❌ Upload failed:", err);
     if (!statusElem.textContent.includes("No reports remaining")) {
       statusElem.textContent = `❌ Upload failed: ${err.message}`;
+    }
+  } finally {
+    // Re-enable button and restore color once status is no longer the loading message
+    if (statusElem.textContent !== "📤 Uploading and analyzing your ledger...") {
+      button.disabled = false;
+      button.style.backgroundColor = "#0050ff";
+    } else {
+      // Failsafe: check again after 1 second
+      const checkDone = setInterval(() => {
+        if (statusElem.textContent !== "📤 Uploading and analyzing your ledger...") {
+          button.disabled = false;
+          button.style.backgroundColor = "#0050ff";
+          clearInterval(checkDone);
+        }
+      }, 1000);
     }
   }
 }
